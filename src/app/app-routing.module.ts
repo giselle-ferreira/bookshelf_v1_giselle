@@ -6,7 +6,7 @@ const routes: Routes = [
 
   {
     path: 'cdd',
-    loadChildren: () => import('./cdd/cdd-routing.module').then(m => m.CddRoutingModule)
+    loadChildren: () => import('./cdd/cdd.module').then(m => m.CddModule)
   }
 
 ];
