@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "bookshelf-1163a": {
+      "hosting": {
+        "bookshelf_v1_giselle": [
+          "bookshelf-1163a"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "bookshelf-1163a"
+  }
+}

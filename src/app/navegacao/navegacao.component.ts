@@ -14,11 +14,11 @@ export class NavegacaoComponent {
 
    // Itens do menu principal
   tituloNav = 'Bookshelf V1';
-  usuario={userName: 'Giselle Ferreira', icone:'remember_me'};
+  // usuario={userName: 'Giselle Ferreira', icone:'remember_me'};
 
 
   // Itens da barra superior
-  tituloBarra = '[Sua Estante Virtual]';
+  // tituloBarra = '[Sua Estante Virtual]';
 
   // Itens de icones e imagens de navegação
   iconeGeral = '../../assets/Imagens/ShelfBook.png';
