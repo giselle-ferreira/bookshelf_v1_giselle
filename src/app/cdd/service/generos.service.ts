@@ -8,12 +8,12 @@ import { delay, first, tap } from 'rxjs';
 })
 export class GenerosService {
 
-  private readonly urlAPI = '/assets/generos.json';
+  private readonly uriAPI = '/assets/generos.json';
 
   constructor(private clienteDados: HttpClient) { }
 
   listagemGeneros() {
-    return this.clienteDados.get<Generos[]>(this.urlAPI)
+    return this.clienteDados.get<Generos[]>(this.uriAPI)
     .pipe(
       first(),
       delay(500),

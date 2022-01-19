@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Dashboard } from './../modelosInterface/dashboard';
+import { DashboardService } from './../servicosInterface/dashboard.service';
+import { Component, Pipe } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
+import { Observable, catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-feed',
@@ -10,26 +13,28 @@ import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 export class FeedComponent {
   usuario={userName: 'Giselle Ferreira', icone:'remember_me'};
 
+
+  cards$: Observable<Dashboard[]>;
+
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map(({ matches }) => {
       if (matches) {
-        return [
-          { title: 'O melhor livro de Janeiro', img: '../../assets/imagems/1.png', cols: 1, rows: 1 },
-          { title: 'Dica dos Leitores', img: '../../assets/imagems/2.png', cols: 1, rows: 1 },
-          { title: 'O mais comentado da semana', img: '../../assets/imagems/3.png', cols: 1, rows: 1 },
-          { title: 'Indicação do Time Bookshelf', img: '../../assets/imagems/4.png', cols: 1, rows: 1 }
-        ];
+        return this.cards$;
       }
-
-      return [
-        { title: 'O melhor livro de Janeiro', img: '../../assets/imagems/1.png', cols: 2, rows: 1 },
-        { title: 'Dica dos Leitores', img: '../../assets/imagems/2.png', cols: 1, rows: 1 },
-        { title: 'O mais comentado da semana', img: '../../assets/imagems/3.png', cols: 1, rows: 2 },
-        { title: 'Indicação do Time Bookshelf', img: '../../assets/imagems/4.png', cols: 1, rows: 1 }
-      ];
+      return this.cards$;
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
-}
+  constructor(private breakpointObserver: BreakpointObserver,
+    private dashboardService: DashboardService) {
+    this.cards$ = dashboardService.listagemFeed()
+      .pipe(
+        catchError(error => {
+          return of([])
+        })
+      )
+    }
+
+  }
+// }
