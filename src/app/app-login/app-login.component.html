@@ -3,10 +3,10 @@
   <mat-card class="example-card">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title></mat-card-title>
+      <mat-card-title>{{ conteudo }}</mat-card-title>
       <mat-card-subtitle>[Entre em sua Estante Virtual]</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="../../imagens/4.png" alt="Banner do Login" />
+    <img mat-card-image src="../../Imagens/4.png" alt="Banner do Login" />
 
     <mat-card-content>
       <form [formGroup]="formularioLogin" novalidate (ngSubmit)="onSubmit()">
@@ -14,9 +14,22 @@
           <input matInput placeholder="Email de Login" />
         </mat-form-field>
 
+        <!-- Diretiva do Angular para tratar erro - email -->
+        <mat-error *ngIf="email?.errors?.['required']"
+          >O campo de e-mail não pode estar vazio</mat-error
+        >
+        <mat-error *ngIf="email?.errors?.['email']"
+          >O formato do e-mail não é válido.</mat-error
+        >
+
         <mat-form-field>
           <input matInput placeholder="Senha de Acesso" type="password" />
         </mat-form-field>
+
+        <!-- Diretiva do Angular para tratar erro - senha -->
+        <mat-error *ngIf="senha?.errors?.['required']"
+          >Senha não pode ser vazia.</mat-error
+        >
 
         <button mat-raised-button color="accent" type="submit">Entrar</button>
         <button mat-button mat-dialog-close>Fechar</button>

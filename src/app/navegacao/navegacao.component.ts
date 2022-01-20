@@ -1,3 +1,5 @@
+import { AppLoginComponent } from './../app-login/app-login.component';
+import { MatDialog } from '@angular/material/dialog';
 import { MenuNavegador } from './../modelosInterface/menuNavegador';
 import { NavegacaoService } from './../servicosInterface/navegacao.service';
 import { Component } from '@angular/core';
@@ -34,6 +36,7 @@ export class NavegacaoComponent {
     );
 
   constructor(private breakpointObserver: BreakpointObserver,
+    private telaLogin: MatDialog,
     private navegadorService: NavegacaoService) {
       this.itensMenu$ = navegadorService.listagemMenu()
       .pipe(
@@ -43,4 +46,9 @@ export class NavegacaoComponent {
       )
     }
 
+    abrirLogin(erroMsg: string){
+      this.telaLogin.open(AppLoginComponent,{
+        data:erroMsg
+      })
+    }
 }
