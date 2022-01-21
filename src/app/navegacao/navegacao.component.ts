@@ -19,8 +19,9 @@ export class NavegacaoComponent {
   usuario$ = this.autenticacaoFirebaseService.usuarioLogado$
 
    // Itens do menu principal
-  tituloNav = 'Bookshelf V1';
-  // usuario={userName: 'Giselle Ferreira', icone:'remember_me'};
+  // tituloNav = 'Bookshelf V1';
+  logoMenu='img mat-card-image src="../../assets/Imagens/logoBS4.png'
+  // usuario={userName: 'Giselle Ferreira', icone:'remember_me'};s
 
 
   // Itens da barra superior

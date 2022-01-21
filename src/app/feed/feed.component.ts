@@ -1,3 +1,4 @@
+import { AutenticacaoFirebaseService } from './../servicosInterface/autenticacaoFirebase.service';
 import { Dashboard } from './../modelosInterface/dashboard';
 import { DashboardService } from './../servicosInterface/dashboard.service';
 import { Component, Pipe } from '@angular/core';
@@ -11,7 +12,10 @@ import { Observable, catchError, of } from 'rxjs';
   styleUrls: ['./feed.component.scss']
 })
 export class FeedComponent {
-  usuario={userName: 'Giselle Ferreira', icone:'remember_me'};
+  // usuario={userName: 'Giselle Ferreira', icone:'remember_me'};
+
+  // usuario vem de dentro do servico de login
+  usuario$ = this.autenticacaoFirebaseService.usuarioLogado$
 
 
   cards$: Observable<Dashboard[]>;
@@ -26,8 +30,10 @@ export class FeedComponent {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver,
-    private dashboardService: DashboardService) {
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private dashboardService: DashboardService,
+    private autenticacaoFirebaseService: AutenticacaoFirebaseService ) {
     this.cards$ = dashboardService.listagemFeed()
       .pipe(
         catchError(error => {

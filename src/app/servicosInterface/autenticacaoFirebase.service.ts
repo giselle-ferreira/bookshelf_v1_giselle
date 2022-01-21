@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import { from } from 'rxjs';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { from, switchMap } from 'rxjs';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { authState } from 'rxfire/auth';
 
 @Injectable({
@@ -22,4 +22,12 @@ export class AutenticacaoFirebaseService {
     return from(this.usuarioFb.signOut())
   }
 
+  cadastrarUsuario(nome: string, email: string, senha: string){
+
+    return from(createUserWithEmailAndPassword(this.usuarioFb, email, senha)).pipe(
+
+      //mapear o user e com o updateProfile especifica o que vc quer do user, no caso o displayName
+      switchMap(({user}) => updateProfile(user,{displayName: nome}))
+    )
+  }
 }

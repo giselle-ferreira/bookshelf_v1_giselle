@@ -1,5 +1,8 @@
+import { HotToastService } from '@ngneat/hot-toast';
+import { AutenticacaoFirebaseService } from './../servicosInterface/autenticacaoFirebase.service';
 import { AbstractControl, FormBuilder, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 // funcao que pode ser usada como exportacao. Fora ou dentro do cadastro
 // essa nomenclatura é padrao
@@ -9,7 +12,7 @@ export function passwordMatchValidator(): ValidatorFn{
     const senha = control.get('senha')?.value; // o sinal de interrogacao quer dizer pode ser nulo (e nao tem problema) ou ter valor
     const confirma = control.get('confirmaSenha')?.value;
 
-    //so é disparado caso haja discrepância entre a senha e a confirmação
+    // só é disparado caso haja discrepância entre a senha e a confirmação
     if(senha && confirma && senha !== confirma){
       return {
         senhaConfirmada: true
@@ -27,18 +30,24 @@ export function passwordMatchValidator(): ValidatorFn{
 })
 export class AppCadastroComponent implements OnInit {
 
-  //copiados do app login
+  // copiados do app login
+  // confirmação dos campos
   formularioCadastro = this.loginBuilder.group({
-    nome: new FormControl('',Validators.required),
+    nome: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
-    senha: new FormControl('',Validators.required),
-    confirmaSenha: new FormControl('',Validators.required)
-  },{validador: passwordMatchValidator()}); // ele é acionado a partir do construtor do formulario
+    senha: new FormControl('', Validators.required),
+    confirmaSenha: new FormControl('', Validators.required)
+  }, {validators: passwordMatchValidator()}); // acionado a partir do construtor do formulário
 
 
-  constructor(private loginBuilder: FormBuilder) { }
+  constructor(
+    private loginBuilder: FormBuilder,
+    private autenticacaoFirebaseService: AutenticacaoFirebaseService,
+    private toast: HotToastService,
+    private rotas: Router
+    ) { }
 
-  //metodos copiados do app login
+  // métodos copiados do app login
   get nome(){
     return this.formularioCadastro.get('nome')
   }
@@ -57,7 +66,22 @@ export class AppCadastroComponent implements OnInit {
 
 
   enviaCadastro(){
-    alert('enviado')
+    // rotina de estruturação de constante
+    if(!this.formularioCadastro.valid){
+      // card erro de validação do cadastro
+      return;
+    }
+    // criei espaço na memoria para receber as informações que vem da view
+    const {nome, email, senha} = this.formularioCadastro.value
+    this.autenticacaoFirebaseService.cadastrarUsuario(nome, email, senha).pipe(
+      this.toast.observe({
+        success: 'Cadastro executado, bem-vindo(a) ao Bookshelf.',
+        loading: 'Enviando informações...',
+        error: ({ message }) => `Houve um problema: #BS${message}`,
+      })
+    ).subscribe(() => {
+      this.rotas.navigate(['/']) // quando termina, ele é enviado para a rota base
+    })
   }
 
   ngOnInit(): void {

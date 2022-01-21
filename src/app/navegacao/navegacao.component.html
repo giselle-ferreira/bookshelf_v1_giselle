@@ -7,13 +7,9 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false"
   >
-    <mat-toolbar>{{ tituloNav }}</mat-toolbar>
-    <!-- <p>
-      <mat-icon aria-hidden="false" aria-label="Icone do Usuário">{{
-        usuario.icone
-      }}</mat-icon>
-      {{ usuario.userName }}
-    </p> -->
+
+      <img mat-card-image [src]="logoMenu" alt="Logo Alto do Menu">
+
     <mat-nav-list *ngFor="let itemMenu of itensMenu$ | async; index as i">
       <a
         mat-list-item
@@ -39,17 +35,20 @@
         [width]="larguraIcone"
         [height]="alturaIcone"
         [src]="iconeGeral"
+
       />
-      <!-- <span>{{ tituloBarra }}</span> -->
 
       <ng-container *ngIf='usuario$ | async as usuario; else botaoLogin'>
         <button
         mat-raised-button
         color="primary"
-        (click)="abrirLogin('Tela de Login')" (click)="sairUsuario()"
+        [matMenuTriggerFor]="usuarioMenu"
       >
-        <mat-icon class="mat-18">logout</mat-icon>
-        LOGOUT
+
+        <mat-icon class="mat-18">local_library</mat-icon>
+        {{ usuario.displayName }}
+        <mat-icon>expand_more</mat-icon>
+
       </button>
       </ng-container>
 
@@ -63,9 +62,13 @@
           LOGIN
         </button>
         </ng-template>
-
-
     </mat-toolbar>
+
+    <!-- Adição de logout aqui com mat-menu -->
+    <mat-menu #usuarioMenu="matMenu">
+      <button mat-menu-item (click)="sairUsuario()">LOGOUT</button>
+    </mat-menu>
+
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
