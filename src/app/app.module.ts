@@ -28,6 +28,8 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { provideStorage,getStorage } from '@angular/fire/storage';
+import { HotToastModule } from '@ngneat/hot-toast';
+import { AppCadastroComponent } from './app-cadastro/app-cadastro.component';
 
 
 
@@ -36,7 +38,8 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
     AppComponent,
     NavegacaoComponent,
     FeedComponent,
-    AppLoginComponent
+    AppLoginComponent,
+    AppCadastroComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +64,8 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
     provideFirestore(() => getFirestore()),
-    provideStorage(() => getStorage())
+    provideStorage(() => getStorage()),
+    HotToastModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

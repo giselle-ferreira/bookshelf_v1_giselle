@@ -1,3 +1,4 @@
+import { AutenticacaoFirebaseService } from './../servicosInterface/autenticacaoFirebase.service';
 import { AppLoginComponent } from './../app-login/app-login.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MenuNavegador } from './../modelosInterface/menuNavegador';
@@ -6,6 +7,7 @@ import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, catchError, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navegacao',
@@ -13,6 +15,8 @@ import { map, shareReplay } from 'rxjs/operators';
   styleUrls: ['./navegacao.component.scss']
 })
 export class NavegacaoComponent {
+
+  usuario$ = this.autenticacaoFirebaseService.usuarioLogado$
 
    // Itens do menu principal
   tituloNav = 'Bookshelf V1';
@@ -37,6 +41,8 @@ export class NavegacaoComponent {
 
   constructor(private breakpointObserver: BreakpointObserver,
     private telaLogin: MatDialog,
+    private rotas: Router,
+    private autenticacaoFirebaseService: AutenticacaoFirebaseService,
     private navegadorService: NavegacaoService) {
       this.itensMenu$ = navegadorService.listagemMenu()
       .pipe(
@@ -49,6 +55,13 @@ export class NavegacaoComponent {
     abrirLogin(erroMsg: string){
       this.telaLogin.open(AppLoginComponent,{
         data:erroMsg
+      })
+    }
+
+    //promessa e executa a função na consequencia do subscribe
+    sairUsuario(){
+      this.autenticacaoFirebaseService.sairLogin().subscribe(()=> {
+        this.rotas.navigate([''])
       })
     }
 }

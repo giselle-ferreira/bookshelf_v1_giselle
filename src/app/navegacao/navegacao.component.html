@@ -41,15 +41,33 @@
         [src]="iconeGeral"
       />
       <!-- <span>{{ tituloBarra }}</span> -->
-      <button
+
+      <ng-container *ngIf='usuario$ | async as usuario; else botaoLogin'>
+        <button
         mat-raised-button
         color="primary"
-        (click)="abrirLogin('Tela de Login')"
+        (click)="abrirLogin('Tela de Login')" (click)="sairUsuario()"
       >
-        <mat-icon class="mat-18">login</mat-icon>
-        LOGIN
+        <mat-icon class="mat-18">logout</mat-icon>
+        LOGOUT
       </button>
+      </ng-container>
+
+        <ng-template #botaoLogin>
+          <button
+          mat-raised-button
+          color="primary"
+          (click)="abrirLogin('Tela de Login')"
+        >
+          <mat-icon class="mat-18">login</mat-icon>
+          LOGIN
+        </button>
+        </ng-template>
+
+
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+
