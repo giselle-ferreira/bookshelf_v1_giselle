@@ -1,7 +1,7 @@
 import { AutenticacaoFirebaseService } from './../servicosInterface/autenticacaoFirebase.service';
-import { Dashboard } from './../modelosInterface/dashboard';
 import { DashboardService } from './../servicosInterface/dashboard.service';
-import { Component, Pipe } from '@angular/core';
+import { Dashboard } from './../modelosInterface/dashboard';
+import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable, catchError, of } from 'rxjs';
@@ -12,15 +12,8 @@ import { Observable, catchError, of } from 'rxjs';
   styleUrls: ['./feed.component.scss']
 })
 export class FeedComponent {
-  // usuario={userName: 'Giselle Ferreira', icone:'remember_me'};
-
-  // usuario vem de dentro do servico de login
-  usuario$ = this.autenticacaoFirebaseService.usuarioLogado$
-
-
   cards$: Observable<Dashboard[]>;
-
-  /** Based on the screen size, switch from standard to one column per row */
+  usuario$= this.autenticacaoFirebaseService.usuarioLogado$;
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map(({ matches }) => {
       if (matches) {
@@ -33,14 +26,13 @@ export class FeedComponent {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private dashboardService: DashboardService,
-    private autenticacaoFirebaseService: AutenticacaoFirebaseService ) {
-    this.cards$ = dashboardService.listagemFeed()
+    private autenticacaoFirebaseService: AutenticacaoFirebaseService
+    ) {
+      this.cards$ = dashboardService.listagemCards()
       .pipe(
-        catchError(error => {
+        catchError(error =>{
           return of([])
         })
       )
     }
-
-  }
-// }
+}
